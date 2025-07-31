@@ -72,7 +72,7 @@ public class AuthController : BaseApiController
     [HttpPost("refresh")]
     [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<LoginResponse>> RefreshToken([FromBody] RefreshTokenRequest refreshRequest)
+    public ActionResult<LoginResponse> RefreshToken([FromBody] RefreshTokenRequest refreshRequest)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

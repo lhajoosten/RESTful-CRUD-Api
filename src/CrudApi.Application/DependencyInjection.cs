@@ -10,11 +10,15 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(MappingProfile));
+        services.AddAutoMapper(cfg =>
+        {
+            cfg.AddProfile<MappingProfile>();
+        });
         services.AddValidatorsFromAssemblyContaining<MappingProfile>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
         
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ICategoryService, CategoryService>();
 
         return services;
     }

@@ -64,6 +64,83 @@
             <param name="resourceId">ID of the resource that was not found</param>
             <returns>Not found response</returns>
         </member>
+        <member name="T:CrudApi.Api.Controllers.CategoriesController">
+            <summary>
+            Categories management controller
+            </summary>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.#ctor(CrudApi.Application.Interfaces.ICategoryService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{CrudApi.Api.Controllers.CategoriesController})">
+            <summary>
+            Initializes a new instance of the CategoriesController
+            </summary>
+            <param name="categoryService">Category service</param>
+            <param name="mapper">AutoMapper instance</param>
+            <param name="logger">Logger instance</param>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.GetCategories(System.Boolean,System.Boolean)">
+            <summary>
+            Get all categories with optional hierarchy
+            </summary>
+            <param name="includeChildren">Include child categories</param>
+            <param name="activeOnly">Only active categories</param>
+            <returns>List of categories</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.GetCategory(System.Guid)">
+            <summary>
+            Get category by ID
+            </summary>
+            <param name="id">Category ID</param>
+            <returns>Category details</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.GetCategoryBySlug(System.String)">
+            <summary>
+            Get category by slug
+            </summary>
+            <param name="slug">Category slug</param>
+            <returns>Category details</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.GetRootCategories">
+            <summary>
+            Get root categories (no parent)
+            </summary>
+            <returns>List of root categories</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.GetChildCategories(System.Guid)">
+            <summary>
+            Get child categories by parent ID
+            </summary>
+            <param name="parentId">Parent category ID</param>
+            <returns>List of child categories</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.CreateCategory(CrudApi.Application.DTOs.CreateCategoryDto)">
+            <summary>
+            Create a new category
+            </summary>
+            <param name="categoryDto">Category data</param>
+            <returns>Created category</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.UpdateCategory(System.Guid,CrudApi.Application.DTOs.UpdateCategoryDto)">
+            <summary>
+            Update an existing category
+            </summary>
+            <param name="id">Category ID</param>
+            <param name="categoryDto">Updated category data</param>
+            <returns>Updated category</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.DeleteCategory(System.Guid)">
+            <summary>
+            Delete a category
+            </summary>
+            <param name="id">Category ID</param>
+            <returns>Success message</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.CategoriesController.GetCategoryProducts(System.Guid)">
+            <summary>
+            Get products in a category
+            </summary>
+            <param name="id">Category ID</param>
+            <returns>List of products in the category</returns>
+        </member>
         <member name="T:CrudApi.Api.Controllers.HealthController">
             <summary>
             Health Check Controller - System health monitoring
@@ -250,10 +327,87 @@
             </summary>
             <typeparam name="T">Response data type</typeparam>
         </member>
+        <member name="P:CrudApi.Api.Models.ApiResponse`1.Success">
+            <summary>
+            Gets or sets a value indicating whether the operation was successful
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.ApiResponse`1.Message">
+            <summary>
+            Gets or sets the response message
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.ApiResponse`1.Data">
+            <summary>
+            Gets or sets the response data
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.ApiResponse`1.Errors">
+            <summary>
+            Gets or sets the list of errors
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.ApiResponse`1.Timestamp">
+            <summary>
+            Gets or sets the timestamp of the response
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.ApiResponse`1.TraceId">
+            <summary>
+            Gets or sets the trace identifier for debugging
+            </summary>
+        </member>
+        <member name="M:CrudApi.Api.Models.ApiResponse`1.SuccessResult(`0,System.String)">
+            <summary>
+            Creates a successful API response
+            </summary>
+            <param name="data">The response data</param>
+            <param name="message">The success message</param>
+            <returns>A successful API response</returns>
+        </member>
+        <member name="M:CrudApi.Api.Models.ApiResponse`1.ErrorResult(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Creates an error API response
+            </summary>
+            <param name="message">The error message</param>
+            <param name="errors">The list of errors</param>
+            <returns>An error API response</returns>
+        </member>
+        <member name="M:CrudApi.Api.Models.ApiResponse`1.ErrorResult(System.String,System.String)">
+            <summary>
+            Creates an error API response with a single error
+            </summary>
+            <param name="message">The error message</param>
+            <param name="error">The single error</param>
+            <returns>An error API response</returns>
+        </member>
         <member name="T:CrudApi.Api.Models.ApiResponse">
             <summary>
             Standard API response wrapper without data
             </summary>
+        </member>
+        <member name="M:CrudApi.Api.Models.ApiResponse.SuccessResult(System.String)">
+            <summary>
+            Creates a successful API response without data
+            </summary>
+            <param name="message">The success message</param>
+            <returns>A successful API response</returns>
+        </member>
+        <member name="M:CrudApi.Api.Models.ApiResponse.ErrorResult(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Creates an error API response without data
+            </summary>
+            <param name="message">The error message</param>
+            <param name="errors">The list of errors</param>
+            <returns>An error API response</returns>
+        </member>
+        <member name="M:CrudApi.Api.Models.ApiResponse.ErrorResult(System.String,System.String)">
+            <summary>
+            Creates an error API response without data with a single error
+            </summary>
+            <param name="message">The error message</param>
+            <param name="error">The single error</param>
+            <returns>An error API response</returns>
         </member>
         <member name="T:CrudApi.Api.Models.PaginatedResponse`1">
             <summary>
@@ -261,9 +415,54 @@
             </summary>
             <typeparam name="T">Item type</typeparam>
         </member>
+        <member name="P:CrudApi.Api.Models.PaginatedResponse`1.Items">
+            <summary>
+            Gets or sets the collection of items for the current page
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.PaginatedResponse`1.PageNumber">
+            <summary>
+            Gets or sets the current page number
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.PaginatedResponse`1.PageSize">
+            <summary>
+            Gets or sets the page size
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.PaginatedResponse`1.TotalPages">
+            <summary>
+            Gets or sets the total number of pages
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.PaginatedResponse`1.TotalRecords">
+            <summary>
+            Gets or sets the total number of records
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.PaginatedResponse`1.HasPreviousPage">
+            <summary>
+            Gets a value indicating whether there is a previous page
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.PaginatedResponse`1.HasNextPage">
+            <summary>
+            Gets a value indicating whether there is a next page
+            </summary>
+        </member>
         <member name="T:CrudApi.Api.Models.PaginationParameters">
             <summary>
             Query parameters for pagination
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.PaginationParameters.PageNumber">
+            <summary>
+            Gets or sets the page number (default is 1)
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.PaginationParameters.PageSize">
+            <summary>
+            Gets or sets the page size (maximum is 100, default is 10)
             </summary>
         </member>
         <member name="T:CrudApi.Api.Models.SortingParameters">
@@ -271,9 +470,44 @@
             Query parameters for sorting
             </summary>
         </member>
+        <member name="P:CrudApi.Api.Models.SortingParameters.SortBy">
+            <summary>
+            Gets or sets the field to sort by
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.SortingParameters.SortDirection">
+            <summary>
+            Gets or sets the sort direction (asc or desc)
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.SortingParameters.IsDescending">
+            <summary>
+            Gets a value indicating whether the sort direction is descending
+            </summary>
+        </member>
         <member name="T:CrudApi.Api.Models.QueryParameters">
             <summary>
-            Combined query parameters
+            Combined query parameters for pagination, sorting, and searching
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.QueryParameters.Search">
+            <summary>
+            Gets or sets the search term to filter results
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.QueryParameters.SortBy">
+            <summary>
+            Gets or sets the field to sort by
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.QueryParameters.SortDirection">
+            <summary>
+            Gets or sets the sort direction (asc or desc)
+            </summary>
+        </member>
+        <member name="P:CrudApi.Api.Models.QueryParameters.IsDescending">
+            <summary>
+            Gets a value indicating whether the sort direction is descending
             </summary>
         </member>
     </members>

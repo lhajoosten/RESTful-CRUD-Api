@@ -31,4 +31,11 @@ public class ProductRepository : Repository<Product>, IProductRepository
             .Where(p => p.StockQuantity <= threshold && p.IsActive)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<IEnumerable<Product>> GetByCategoryIdAsync(Guid categoryId, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet
+            .Where(p => p.CategoryId == categoryId && p.IsActive)
+            .ToListAsync(cancellationToken);
+    }
 }

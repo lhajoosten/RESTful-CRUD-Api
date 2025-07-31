@@ -28,6 +28,8 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IProductTagRepository, ProductTagRepository>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         return services;
