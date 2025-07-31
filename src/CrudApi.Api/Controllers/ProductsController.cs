@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 using Asp.Versioning;
+using AutoMapper;
 using CrudApi.Application.DTOs;
 using CrudApi.Application.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -19,11 +20,13 @@ namespace CrudApi.Api.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
+    private readonly IMapper _mapper;
     private readonly ILogger<ProductsController> _logger;
 
-    public ProductsController(IProductService productService, ILogger<ProductsController> logger)
+    public ProductsController(IProductService productService, IMapper mapper, ILogger<ProductsController> logger)
     {
         _productService = productService;
+        _mapper = mapper;
         _logger = logger;
     }
 
@@ -79,6 +82,29 @@ public class ProductsController : ControllerBase
 
         _logger.LogInformation("Getting products by category: {Category}", category);
         var products = await _productService.GetByCategoryAsync(category, cancellationToken);
+        return Ok(products);
+    }
+
+    /// <summary>
+    /// Get products by category ID
+    /// </summary>
+    /// <param name="categoryId">Category ID</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of products in the specified category</returns>
+    /// <response code="200">Returns the list of products in the category</response>
+    /// <response code="400">If the category ID is invalid</response>
+    [HttpGet("category-id/{categoryId:guid}")]
+    [ProducesResponseType(typeof(IEnumerable<ProductDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategoryId(
+        [Required] Guid categoryId, 
+        CancellationToken cancellationToken = default)
+    {
+        if (categoryId == Guid.Empty)
+            return BadRequest("Category ID cannot be empty");
+
+        _logger.LogInformation("Getting products by category ID: {CategoryId}", categoryId);
+        var products = await _productService.GetProductsByCategoryAsync(categoryId, cancellationToken);
         return Ok(products);
     }
 
@@ -287,5 +313,42 @@ public class ProductsController : ControllerBase
 
         var exists = await _productService.ExistsAsync(id, cancellationToken);
         return Ok(exists);
+    }
+
+    // Additional methods for test compatibility
+    [HttpGet("all")]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(CancellationToken cancellationToken = default)
+    {
+        return await GetAllProducts(cancellationToken);
+    }
+
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> SearchProducts(
+        [FromQuery] string query, 
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return BadRequest("Search query cannot be empty");
+
+        _logger.LogInformation("Searching products with query: {Query}", query);
+        var products = await _productService.SearchProductsAsync(query, cancellationToken);
+        return Ok(products);
+    }
+
+    [HttpGet("price-range")]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByPriceRange(
+        [FromQuery] decimal minPrice,
+        [FromQuery] decimal maxPrice,
+        CancellationToken cancellationToken = default)
+    {
+        if (minPrice < 0 || maxPrice < 0)
+            return BadRequest("Prices must be non-negative");
+
+        if (minPrice > maxPrice)
+            return BadRequest("Minimum price cannot be greater than maximum price");
+
+        _logger.LogInformation("Getting products in price range: {MinPrice} - {MaxPrice}", minPrice, maxPrice);
+        var products = await _productService.GetProductsByPriceRangeAsync(minPrice, maxPrice, cancellationToken);
+        return Ok(products);
     }
 }

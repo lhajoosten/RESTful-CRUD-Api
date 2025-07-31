@@ -78,4 +78,35 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
 
         return await query.AnyAsync();
     }
+
+    // Additional methods for test compatibility
+    public async Task<IEnumerable<Category>> GetChildCategoriesAsync(Guid parentId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Categories
+            .Where(c => c.ParentCategoryId == parentId && !c.IsDeleted && c.IsActive)
+            .OrderBy(c => c.DisplayOrder)
+            .ThenBy(c => c.Name)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Category>> GetActiveCategoriesAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Categories
+            .Where(c => c.IsActive && !c.IsDeleted)
+            .OrderBy(c => c.DisplayOrder)
+            .ThenBy(c => c.Name)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<bool> IsSlugUniqueAsync(string slug, Guid? excludeId = null, CancellationToken cancellationToken = default)
+    {
+        var query = _context.Categories.Where(c => c.Slug == slug && !c.IsDeleted);
+        
+        if (excludeId.HasValue)
+        {
+            query = query.Where(c => c.Id != excludeId.Value);
+        }
+
+        return !await query.AnyAsync(cancellationToken);
+    }
 }

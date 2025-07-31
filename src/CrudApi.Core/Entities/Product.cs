@@ -23,12 +23,6 @@ public class Product : BaseEntity
     public decimal Price { get; set; }
 
     /// <summary>
-    /// Legacy category field (deprecated - use CategoryId instead)
-    /// </summary>
-    [Obsolete("Use CategoryId instead")]
-    public string Category { get; set; } = string.Empty;
-
-    /// <summary>
     /// Category ID (foreign key)
     /// </summary>
     public Guid? CategoryId { get; set; }

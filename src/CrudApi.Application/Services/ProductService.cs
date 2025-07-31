@@ -95,4 +95,53 @@ public class ProductService : IProductService
     {
         return await _productRepository.CountAsync(cancellationToken);
     }
+
+    // Additional method implementations for test compatibility
+    public async Task<ProductDto?> GetProductByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await GetByIdAsync(id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(CancellationToken cancellationToken = default)
+    {
+        return await GetAllAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<ProductDto>> GetProductsByCategoryAsync(string category, CancellationToken cancellationToken = default)
+    {
+        return await GetByCategoryAsync(category, cancellationToken);
+    }
+
+    public async Task<IEnumerable<ProductDto>> GetProductsByCategoryAsync(Guid categoryId, CancellationToken cancellationToken = default)
+    {
+        var products = await _productRepository.GetByCategoryIdAsync(categoryId, cancellationToken);
+        return _mapper.Map<IEnumerable<ProductDto>>(products);
+    }
+
+    public async Task<IEnumerable<ProductDto>> SearchProductsAsync(string searchTerm, CancellationToken cancellationToken = default)
+    {
+        var products = await _productRepository.SearchAsync(searchTerm, cancellationToken);
+        return _mapper.Map<IEnumerable<ProductDto>>(products);
+    }
+
+    public async Task<IEnumerable<ProductDto>> GetProductsByPriceRangeAsync(decimal minPrice, decimal maxPrice, CancellationToken cancellationToken = default)
+    {
+        var products = await _productRepository.GetByPriceRangeAsync(minPrice, maxPrice, cancellationToken);
+        return _mapper.Map<IEnumerable<ProductDto>>(products);
+    }
+
+    public async Task<ProductDto> CreateProductAsync(CreateProductDto createProductDto, CancellationToken cancellationToken = default)
+    {
+        return await CreateAsync(createProductDto, cancellationToken);
+    }
+
+    public async Task<ProductDto?> UpdateProductAsync(Guid id, UpdateProductDto updateProductDto, CancellationToken cancellationToken = default)
+    {
+        return await UpdateAsync(id, updateProductDto, cancellationToken);
+    }
+
+    public async Task<bool> DeleteProductAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await DeleteAsync(id, cancellationToken);
+    }
 }

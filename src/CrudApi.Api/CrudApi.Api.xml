@@ -237,6 +237,16 @@
             <response code="200">Returns the list of products in the category</response>
             <response code="400">If the category parameter is invalid</response>
         </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.GetProductsByCategoryId(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Get products by category ID
+            </summary>
+            <param name="categoryId">Category ID</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>List of products in the specified category</returns>
+            <response code="200">Returns the list of products in the category</response>
+            <response code="400">If the category ID is invalid</response>
+        </member>
         <member name="M:CrudApi.Api.Controllers.ProductsController.GetLowStockProducts(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Get products with low stock

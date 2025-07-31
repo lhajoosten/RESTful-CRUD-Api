@@ -35,7 +35,6 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
             entity.Property(e => e.Description).IsRequired().HasMaxLength(1000);
             entity.Property(e => e.Price).HasPrecision(18, 2);
-            entity.Property(e => e.Category).HasMaxLength(100); // Legacy field
             entity.Property(e => e.ImageUrl).HasMaxLength(500);
             entity.Property(e => e.Sku).HasMaxLength(50);
             entity.Property(e => e.Weight).HasPrecision(10, 3);
@@ -58,7 +57,6 @@ public class ApplicationDbContext : DbContext
                   .OnDelete(DeleteBehavior.Cascade);
 
             // Indexes
-            entity.HasIndex(e => e.Category);
             entity.HasIndex(e => e.CategoryId);
             entity.HasIndex(e => e.Sku).IsUnique();
             entity.HasIndex(e => e.IsActive);
@@ -215,7 +213,6 @@ public class ApplicationDbContext : DbContext
                 Name = "Laptop Pro",
                 Description = "High-performance laptop for professionals",
                 Price = 1299.99m,
-                Category = "Electronics", // Legacy field
                 CategoryId = computersId, // Computer category
                 Sku = "LAP-PRO-001",
                 StockQuantity = 50,
@@ -230,7 +227,6 @@ public class ApplicationDbContext : DbContext
                 Name = "Wireless Mouse",
                 Description = "Ergonomic wireless mouse with precision tracking",
                 Price = 29.99m,
-                Category = "Electronics", // Legacy field
                 CategoryId = peripheralsId, // Peripherals category
                 Sku = "MOU-WIR-001",
                 StockQuantity = 150,
@@ -245,7 +241,6 @@ public class ApplicationDbContext : DbContext
                 Name = "Office Chair",
                 Description = "Comfortable ergonomic office chair",
                 Price = 249.99m,
-                Category = "Furniture", // Legacy field
                 CategoryId = furnitureId, // Furniture category
                 Sku = "CHR-OFF-001",
                 StockQuantity = 25,

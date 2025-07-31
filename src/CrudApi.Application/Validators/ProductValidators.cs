@@ -19,10 +19,6 @@ public class CreateProductDtoValidator : AbstractValidator<CreateProductDto>
             .GreaterThan(0).WithMessage("Product price must be greater than 0")
             .LessThan(1000000).WithMessage("Product price must be less than 1,000,000");
 
-        RuleFor(x => x.Category)
-            .NotEmpty().WithMessage("Product category is required")
-            .MaximumLength(100).WithMessage("Product category must not exceed 100 characters");
-
         RuleFor(x => x.StockQuantity)
             .GreaterThanOrEqualTo(0).WithMessage("Stock quantity must be 0 or greater");
 
@@ -54,10 +50,6 @@ public class UpdateProductDtoValidator : AbstractValidator<UpdateProductDto>
             .GreaterThan(0).WithMessage("Product price must be greater than 0")
             .LessThan(1000000).WithMessage("Product price must be less than 1,000,000")
             .When(x => x.Price.HasValue);
-
-        RuleFor(x => x.Category)
-            .MaximumLength(100).WithMessage("Product category must not exceed 100 characters")
-            .When(x => !string.IsNullOrEmpty(x.Category));
 
         RuleFor(x => x.StockQuantity)
             .GreaterThanOrEqualTo(0).WithMessage("Stock quantity must be 0 or greater")

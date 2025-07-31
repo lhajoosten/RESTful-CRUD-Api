@@ -124,10 +124,11 @@ public class MetricsController : BaseApiController
         var allProducts = await _productService.GetAllAsync(cancellationToken);
         
         return allProducts
-            .GroupBy(p => p.Category)
+            .Where(p => !string.IsNullOrEmpty(p.CategoryName))
+            .GroupBy(p => p.CategoryName)
             .Select(g => new CategoryMetric
             {
-                Category = g.Key,
+                Category = g.Key!,
                 ProductCount = g.Count(),
                 AveragePrice = g.Average(p => p.Price),
                 TotalStock = g.Sum(p => p.StockQuantity)

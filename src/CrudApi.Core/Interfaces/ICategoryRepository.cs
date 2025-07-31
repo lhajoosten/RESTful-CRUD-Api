@@ -32,4 +32,9 @@ public interface ICategoryRepository : IRepository<Category>
     /// Check if slug already exists
     /// </summary>
     Task<bool> SlugExistsAsync(string slug, Guid? excludeId = null);
+
+    // Additional methods for test compatibility
+    Task<IEnumerable<Category>> GetChildCategoriesAsync(Guid parentId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Category>> GetActiveCategoriesAsync(CancellationToken cancellationToken = default);
+    Task<bool> IsSlugUniqueAsync(string slug, Guid? excludeId = null, CancellationToken cancellationToken = default);
 }
