@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  crud-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crud-api
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CrudApiDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true;
+      - JwtSettings__SecretKey=ThisIsASecretKeyForJWTTokenGeneration123456789
+      - JwtSettings__Issuer=CrudApi
+      - JwtSettings__Audience=CrudApiUsers
+    depends_on:
+      - sqlserver
+    networks:
+      - crud-api-network
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: crud-api-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - crud-api-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q 'SELECT 1'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  nginx:
+    image: nginx:alpine
+    container_name: crud-api-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - crud-api
+    networks:
+      - crud-api-network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  crud-api-network:
+    driver: bridge

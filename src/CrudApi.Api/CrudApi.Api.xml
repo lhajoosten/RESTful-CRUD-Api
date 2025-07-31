@@ -1,0 +1,280 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CrudApi.Api</name>
+    </assembly>
+    <members>
+        <member name="T:CrudApi.Api.Controllers.AuthController">
+            <summary>
+            Authentication Controller - Manages JWT tokens
+            </summary>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.AuthController.Login(CrudApi.Api.Controllers.LoginRequest)">
+            <summary>
+            Login and get JWT token
+            </summary>
+            <param name="loginRequest">Login credentials</param>
+            <returns>JWT token</returns>
+            <response code="200">Returns the JWT token</response>
+            <response code="401">If credentials are invalid</response>
+            <response code="400">If request data is invalid</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.AuthController.RefreshToken(CrudApi.Api.Controllers.RefreshTokenRequest)">
+            <summary>
+            Refresh JWT token
+            </summary>
+            <param name="refreshRequest">Refresh token request</param>
+            <returns>New JWT token</returns>
+            <response code="200">Returns the new JWT token</response>
+            <response code="401">If refresh token is invalid</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.AuthController.GetCurrentUser">
+            <summary>
+            Get current user information
+            </summary>
+            <returns>Current user details</returns>
+            <response code="200">Returns user information</response>
+            <response code="401">If user is not authenticated</response>
+        </member>
+        <member name="T:CrudApi.Api.Controllers.BaseApiController">
+            <summary>
+            Base API Controller with common functionality
+            </summary>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.BaseApiController.CreateErrorResponse(System.String,System.Object)">
+            <summary>
+            Creates a consistent error response
+            </summary>
+            <param name="message">Error message</param>
+            <param name="details">Additional error details</param>
+            <returns>Problem details response</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.BaseApiController.CreateValidationErrorResponse(System.String)">
+            <summary>
+            Creates a consistent validation error response
+            </summary>
+            <param name="message">Validation error message</param>
+            <returns>Bad request response</returns>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.BaseApiController.CreateNotFoundResponse(System.String,System.Object)">
+            <summary>
+            Creates a consistent not found response
+            </summary>
+            <param name="resourceName">Name of the resource that was not found</param>
+            <param name="resourceId">ID of the resource that was not found</param>
+            <returns>Not found response</returns>
+        </member>
+        <member name="T:CrudApi.Api.Controllers.HealthController">
+            <summary>
+            Health Check Controller - System health monitoring
+            </summary>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.HealthController.GetHealth">
+            <summary>
+            Get overall system health status
+            </summary>
+            <returns>Health status</returns>
+            <response code="200">System is healthy</response>
+            <response code="503">System is unhealthy</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.HealthController.GetSystemInfo">
+            <summary>
+            Get basic system information
+            </summary>
+            <returns>System information</returns>
+            <response code="200">Returns system information</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.HealthController.Ready">
+            <summary>
+            Readiness probe for container orchestration
+            </summary>
+            <returns>Ready status</returns>
+            <response code="200">Service is ready</response>
+            <response code="503">Service is not ready</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.HealthController.Live">
+            <summary>
+            Liveness probe for container orchestration
+            </summary>
+            <returns>Alive status</returns>
+            <response code="200">Service is alive</response>
+        </member>
+        <member name="T:CrudApi.Api.Controllers.MetricsController">
+            <summary>
+            Metrics Controller - API performance and usage metrics
+            </summary>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.MetricsController.GetPerformanceMetrics">
+            <summary>
+            Get API performance metrics
+            </summary>
+            <returns>Performance metrics</returns>
+            <response code="200">Returns performance metrics</response>
+            <response code="401">If user is not authenticated</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.MetricsController.GetBusinessMetrics(System.Threading.CancellationToken)">
+            <summary>
+            Get business metrics
+            </summary>
+            <returns>Business metrics</returns>
+            <response code="200">Returns business metrics</response>
+            <response code="401">If user is not authenticated</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.MetricsController.GetUsageMetrics">
+            <summary>
+            Get API usage statistics
+            </summary>
+            <returns>Usage statistics</returns>
+            <response code="200">Returns usage statistics</response>
+            <response code="401">If user is not authenticated</response>
+        </member>
+        <member name="T:CrudApi.Api.Controllers.ProductsController">
+            <summary>
+            Products API Controller - Manages product CRUD operations
+            </summary>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.GetAllProducts(System.Threading.CancellationToken)">
+            <summary>
+            Get all products
+            </summary>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>List of all products</returns>
+            <response code="200">Returns the list of products</response>
+            <response code="500">If there was an internal server error</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.GetActiveProducts(System.Threading.CancellationToken)">
+            <summary>
+            Get active products only
+            </summary>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>List of active products</returns>
+            <response code="200">Returns the list of active products</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.GetProductsByCategory(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get products by category
+            </summary>
+            <param name="category">Product category</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>List of products in the specified category</returns>
+            <response code="200">Returns the list of products in the category</response>
+            <response code="400">If the category parameter is invalid</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.GetLowStockProducts(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Get products with low stock
+            </summary>
+            <param name="threshold">Stock threshold (default: 10)</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>List of products with low stock</returns>
+            <response code="200">Returns the list of products with low stock</response>
+            <response code="400">If the threshold is invalid</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.GetProduct(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Get product by ID
+            </summary>
+            <param name="id">Product ID</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Product details</returns>
+            <response code="200">Returns the product</response>
+            <response code="404">If product is not found</response>
+            <response code="400">If the ID format is invalid</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.CreateProduct(CrudApi.Application.DTOs.CreateProductDto,System.Threading.CancellationToken)">
+            <summary>
+            Create a new product
+            </summary>
+            <param name="createProductDto">Product creation data</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Created product</returns>
+            <response code="201">Returns the newly created product</response>
+            <response code="400">If the product data is invalid</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.UpdateProduct(System.Guid,CrudApi.Application.DTOs.UpdateProductDto,System.Threading.CancellationToken)">
+            <summary>
+            Update an existing product
+            </summary>
+            <param name="id">Product ID</param>
+            <param name="updateProductDto">Product update data</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Updated product</returns>
+            <response code="200">Returns the updated product</response>
+            <response code="404">If product is not found</response>
+            <response code="400">If the product data is invalid</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.PatchProduct(System.Guid,CrudApi.Application.DTOs.UpdateProductDto,System.Threading.CancellationToken)">
+            <summary>
+            Partially update a product
+            </summary>
+            <param name="id">Product ID</param>
+            <param name="updateProductDto">Product update data</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Updated product</returns>
+            <response code="200">Returns the updated product</response>
+            <response code="404">If product is not found</response>
+            <response code="400">If the product data is invalid</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.DeleteProduct(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Delete a product (soft delete)
+            </summary>
+            <param name="id">Product ID</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>No content</returns>
+            <response code="204">Product successfully deleted</response>
+            <response code="404">If product is not found</response>
+            <response code="400">If the ID format is invalid</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.GetProductCount(System.Threading.CancellationToken)">
+            <summary>
+            Get total product count
+            </summary>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Total count of products</returns>
+            <response code="200">Returns the total count</response>
+        </member>
+        <member name="M:CrudApi.Api.Controllers.ProductsController.ProductExists(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Check if a product exists
+            </summary>
+            <param name="id">Product ID</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Existence status</returns>
+            <response code="200">Returns whether the product exists</response>
+            <response code="400">If the ID format is invalid</response>
+        </member>
+        <member name="T:CrudApi.Api.Models.ApiResponse`1">
+            <summary>
+            Standard API response wrapper
+            </summary>
+            <typeparam name="T">Response data type</typeparam>
+        </member>
+        <member name="T:CrudApi.Api.Models.ApiResponse">
+            <summary>
+            Standard API response wrapper without data
+            </summary>
+        </member>
+        <member name="T:CrudApi.Api.Models.PaginatedResponse`1">
+            <summary>
+            Paginated response wrapper
+            </summary>
+            <typeparam name="T">Item type</typeparam>
+        </member>
+        <member name="T:CrudApi.Api.Models.PaginationParameters">
+            <summary>
+            Query parameters for pagination
+            </summary>
+        </member>
+        <member name="T:CrudApi.Api.Models.SortingParameters">
+            <summary>
+            Query parameters for sorting
+            </summary>
+        </member>
+        <member name="T:CrudApi.Api.Models.QueryParameters">
+            <summary>
+            Combined query parameters
+            </summary>
+        </member>
+    </members>
+</doc>
